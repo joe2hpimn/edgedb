@@ -633,6 +633,9 @@ class Function(CallableObject, s_abc.Function):
     initial_value = so.SchemaField(
         expr.Expression, default=None, compcoef=0.4, coerce=True)
 
+    session_only = so.SchemaField(
+        bool, default=False, compcoef=0.4, coerce=True, allow_ddl_set=True)
+
     def has_inlined_defaults(self, schema):
         # This can be relaxed to just `language is EdgeQL` when we
         # support non-constant defaults.

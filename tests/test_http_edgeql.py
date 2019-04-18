@@ -161,3 +161,40 @@ class TestHttpEdgeQL(tb.EdgeQLTestCase):
             with self.assertRaisesRegex(edgedb.ProtocolError,
                                         r'cannot execute.*connection'):
                 self.edgeql_query(query)
+
+    def test_http_edgeql_session_func_01(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::advisory_lock\(\) '
+                                    r'requires a session'):
+            self.edgeql_query(r"SELECT sys::advisory_lock(1);")
+
+    def test_http_edgeql_session_func_02(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::advisory_unlock\(\) '
+                                    r'requires a session'):
+            self.edgeql_query(r"SELECT sys::advisory_unlock(1);")
+
+    def test_http_edgeql_session_func_03(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::advisory_unlock_all\(\) '
+                                    r'requires a session'):
+            self.edgeql_query(r"SELECT sys::advisory_unlock_all();")
+
+    def test_http_edgeql_session_func_04(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::sleep\(\) requires a session'):
+            self.edgeql_query(r"SELECT sys::sleep(0);")
+
+    def test_http_edgeql_session_func_05(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::sleep\(\) requires a session'):
+            self.edgeql_query(r"SELECT sys::sleep(<duration>'0s');")
+
+    def test_http_edgeql_session_func_06(self):
+        with self.assertRaisesRegex(edgedb.QueryError,
+                                    r'sys::sleep\(\) requires a session'):
+            self.edgeql_query(r"""
+                SELECT Object {
+                    bad := sys::sleep(0)
+                };
+            """)

@@ -64,7 +64,8 @@ def init_context(
         disable_constant_folding: bool=False,
         implicit_id_in_shapes: bool=False,
         implicit_tid_in_shapes: bool=False,
-        json_parameters: bool=False) -> \
+        json_parameters: bool=False,
+        session_mode: bool=False) -> \
         context.ContextLevel:
     stack = context.CompilerContext()
     ctx = stack.current
@@ -100,6 +101,7 @@ def init_context(
     ctx.toplevel_result_view_name = result_view_name
     ctx.implicit_id_in_shapes = implicit_id_in_shapes
     ctx.implicit_tid_in_shapes = implicit_tid_in_shapes
+    ctx.session_mode = session_mode
 
     return ctx
 

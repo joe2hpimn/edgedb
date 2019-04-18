@@ -271,6 +271,9 @@ class ContextLevel(compiler.ContextLevel):
     empty_result_type_hint: s_types.Type
     """Type to use if the statement result expression is an empty set ctor."""
 
+    session_mode: bool
+    """Whether there is a specific session."""
+
     def __init__(self, prevlevel, mode):
         self.mode = mode
 
@@ -319,6 +322,8 @@ class ContextLevel(compiler.ContextLevel):
             self.special_computables_in_mutation_shape = frozenset()
             self.empty_result_type_hint = None
 
+            self.session_mode = False
+
         else:
             self.env = prevlevel.env
             self.derived_target_module = prevlevel.derived_target_module
@@ -356,6 +361,8 @@ class ContextLevel(compiler.ContextLevel):
             self.special_computables_in_mutation_shape = \
                 prevlevel.special_computables_in_mutation_shape
             self.empty_result_type_hint = prevlevel.empty_result_type_hint
+
+            self.session_mode = prevlevel.session_mode
 
             if mode == ContextSwitchMode.SUBQUERY:
                 self.anchors = prevlevel.anchors.copy()
